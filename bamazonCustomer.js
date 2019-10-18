@@ -21,7 +21,7 @@ connection.connect();
 //웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
 
 let productName = [];
-let departmentName = [];
+let itemID = [];
 let price = [];
 let stockQuantity = []; 
 
@@ -30,6 +30,7 @@ function displayItems() {
     //connection to target what data to present ("*" means all)
     connection.query('SELECT * FROM products', function (error, results, fields) {
         if (error) throw error;
+        console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         for (var i = 0; i < results.length; i++) {
             //formatting for display in terminal
             console.log('\x1b[37m%s\x1b[0m', "\n☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵");
@@ -38,7 +39,7 @@ function displayItems() {
             console.log("▶ Price: " + '\x1b[32m%s\x1b[0m', "$" + results[i].price);
             console.log("▶ Quantity Available: " + '\x1b[32m%s\x1b[0m', + results[i].stock_quantity);
             productName.push(results[i].product_name);
-            departmentName.push((i+1));
+            itemID.push((i+1));
             price.push(results[i].price);
             stockQuantity.push(results[i].stock_quantity);
         };
@@ -70,28 +71,16 @@ function customerPrompt() {
     .prompt(consumerQuestions)
     .then(answers => {
 
-    // UPDATE products SET stock_quantity = stock_quantity + (Q2) WHERE item_id = (Q1);
-
-        connection.query('SELECT * FROM products', function (error, results, fields) {
-            if (error) throw error;
-            if ((results[answers.Q1 - 1].stock_quantity) >= answers.Q2) {
-                //THIS IS WHAT SHOULD HAPPEN BUT INSIDE THE MYSQL DATABASE
-                console.log((results[answers.Q1 - 1].stock_quantity) - answers.Q2);
-/*                 console.log("Total Spent ($): " + results) */
-
-/*                 connection.query('UPDATE products SET stock_quantity = stock_quantity + ' + Q2 + ' WHERE item_id = ' + Q1, function (err, result) {
-                    if (err) throw err;
-                    console.log(result.affectedRows + " records updated.");
-                }); */
-
-            } else {
-                console.log('\x1b[31m%s\x1b[0m', "Insufficient quantity!\n");
-                customerPrompt();
-            };
-        });
-
-
-
+        if (stockQuantity[(answers.Q1 - 1)] >= answers.Q2) {
+            connection.query('UPDATE products SET stock_quantity = stock_quantity - ' + answers.Q2 + ' WHERE item_id = ' + answers.Q1, function (err, result) {
+                if (err) throw err;
+                console.log('\x1b[33m%s\x1b[0m', "\nYou purchased " + answers.Q2 + " " + productName[answers.Q1-1] + "(s).");
+                console.log('\x1b[33m%s\x1b[0m', "Inventory updated (" + stockQuantity[answers.Q1-1] + "-" + answers.Q2 + ").")
+                console.log('\x1b[33m%s\x1b[0m', "Total Amount Spent: $" + (price[answers.Q1-1] * answers.Q2));
+            });            
+        } else {
+            console.log('\x1b[31m%s\x1b[0m', "Insufficient quantity!\n");
+        }
     });
 };
 
