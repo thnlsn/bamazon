@@ -150,4 +150,3 @@ function managerPrompt() {
 };
 
 managerPrompt();
-
