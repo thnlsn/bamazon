@@ -20,13 +20,26 @@ connection.connect();
 
 //웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
 
+//code to turn quantity text red if out of stock
+function checkAvailability(quantity, goodColor, badColor) {
+    if (quantity > 0) {
+        return goodColor;
+    } else {
+        return badColor;
+    };
+};
+
+//웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
+
 let productName = [];
 let itemID = [];
 let price = [];
-let stockQuantity = []; 
+let stockQuantity = [];
 
 //function to display all the data on the SQL table
 function displayItems() {
+    let green = "[32m";
+    let red = "[31m";
     //connection to target what data to present ("*" means all)
     connection.query('SELECT * FROM products', function (error, results, fields) {
         if (error) throw error;
@@ -37,7 +50,7 @@ function displayItems() {
             console.log('\x1b[36m%s\x1b[0m', results[i].product_name);
             console.log("▶ ID: " + '\x1b[32m%s\x1b[0m', + (i+1));
             console.log("▶ Price: " + '\x1b[32m%s\x1b[0m', "$" + results[i].price);
-            console.log("▶ Quantity Available: " + '\x1b[32m%s\x1b[0m', + results[i].stock_quantity);
+            console.log("▶ Quantity Available: " + '\x1b' + checkAvailability(results[i].stock_quantity, green, red) + '%s\x1b[0m', + results[i].stock_quantity);
             productName.push(results[i].product_name);
             itemID.push((i+1));
             price.push(results[i].price);
@@ -87,96 +100,6 @@ function customerPrompt() {
 customerPrompt();
 
 //웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
 /*     '\x1b[31m%s\x1b[0m', */
    
