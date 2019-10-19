@@ -69,7 +69,7 @@ function displayItems() {
             console.log("▶ Price: " + '\x1b[32m%s\x1b[0m', "$" + results[i].price);
             console.log("▶ Quantity Available: " + '\x1b' + checkAvailability(results[i].stock_quantity, green, red) + '%s\x1b[0m', + results[i].stock_quantity);
         };
-        console.log('\x1b[37m%s\x1b[0m', "\n☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵\n");
+        console.log('\x1b[37m%s\x1b[0m', "\n☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵\n\n");
     });
 };
 
@@ -94,31 +94,60 @@ function managerPrompt() {
 
         switch (answers.options) {
             case "View Products for Sale":
-                console.log('\x1b[33m', "Displaying all products currently on sale...");
+                console.log('\x1b[33m', "Displaying all products currently on sale...\n");
                 displayItems(); //calling the function for displaying all items.
               break;
 
             case "View Low Inventory":
-                console.log('\x1b[33m', "Displaying all products with a stock quantity below 5 units...");
+                console.log('\x1b[33m', "Displaying all products with a stock quantity below 5 units...\n");
               break;
 
             case "Add to Inventory":
-                console.log('\x1b[33m', "Which product would you like to restock?");
+                console.log('\x1b[33m', "Which product would you like to restock?\n");
 
               break;
 
             case "Add New Product":
-                console.log('\x1b[33m', "Please provide the product name, department, price, and quantity to be added.");
-
+                console.log('\x1b[33m', "Please provide the product name, department, price, and quantity to be added.\n");
+                inquirer
+                .prompt([
+                    {
+                        type: 'input',
+                        name: 'Q1',
+                        message: "What is the name of the product?",
+                        default: "Product"
+                    },
+                    {
+                        type: 'input',
+                        name: 'Q2',
+                        message: "Which department should it be added to?",
+                        default: "General"
+                    },
+                    {
+                        type: 'input',
+                        name: 'Q3',
+                        message: "What price ($) will this product be selling at?",
+                        default: "999999999"
+                    },
+                    {
+                        type: 'input',
+                        name: 'Q4',
+                        message: "How many should we order?",
+                        default: "10"
+                    }
+                ])
+                .then(promptAnswers => {
+                    //code to insert new product to the mysql database table.
+                    connection.query("INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ('" + promptAnswers.Q1 + "', '" + promptAnswers.Q2 + "', " + promptAnswers.Q3 + ", " + promptAnswers.Q4 + ");", function (err, result) {
+                        if (err) throw err;
+                        console.log('\x1b[33m%s\x1b[0m', "\nYou have successuly added " + promptAnswers.Q1 + " to the inventory list.\nCurrently ordering " + promptAnswers.Q4 + " " + promptAnswers.Q1 + "(s).\nThey will be added to the " + promptAnswers.Q2 + " department.\nThey will be priced at $" + promptAnswers.Q3 + " each.")
+                    });    
+                })
               break;
-          }
+          };
 
-        managerPrompt();
-
-        
     });
 };
 
 managerPrompt();
 
-//웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
