@@ -62,6 +62,7 @@ function displayItems() {
 
 displayItems();
 
+
 //웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
 
 let consumerQuestions = [
@@ -80,6 +81,7 @@ let consumerQuestions = [
 ];
 
 function customerPrompt() {
+    console.log(productName);
     inquirer
     .prompt(consumerQuestions)
     .then(answers => {

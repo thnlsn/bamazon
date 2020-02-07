@@ -28,21 +28,21 @@ let stockQuantity = [];
 
 //웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
 
-//function to push current mysql database information
-function pushToGlobalArr() {
-    //first empty the arrays
-    productName.length = 0;
-    itemID.length = 0;
-    price.length = 0;
-    stockQuantity.length = 0;
-    //then push updated information in
-    productName.push(results[i].product_name);
-    itemID.push((i+1));
-    price.push(results[i].price);
-    stockQuantity.push(results[i].stock_quantity);
+function updateArr() {
+    connection.query('SELECT * FROM products', function (error, results, fields) {
+        if (error) throw error;
+        for (var i = 0; i < results.length; i++) {
+            productName.push(results[i].product_name);
+            itemID.push((i+1));
+            price.push(results[i].price);
+            stockQuantity.push(results[i].stock_quantity);
+        };
+    });    
 };
+updateArr();
 
 //웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
+//DISPLAY ALL ITEMS
 
 //function to turn quantity text red if out of stock
 function checkAvailability(quantity, goodColor, badColor) {
@@ -64,17 +64,25 @@ function displayItems() {
         for (var i = 0; i < results.length; i++) {
             //formatting for display in terminal
             console.log('\x1b[37m%s\x1b[0m', "\n☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵");
-            console.log('\x1b[36m%s\x1b[0m', results[i].product_name);
+            console.log('\x1b[36m%s\x1b[0m', results[i ].product_name);
             console.log("▶ ID: " + '\x1b[32m%s\x1b[0m', + (i+1));
             console.log("▶ Price: " + '\x1b[32m%s\x1b[0m', "$" + results[i].price);
             console.log("▶ Quantity Available: " + '\x1b' + checkAvailability(results[i].stock_quantity, green, red) + '%s\x1b[0m', + results[i].stock_quantity);
         };
-        console.log('\x1b[37m%s\x1b[0m', "\n☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵\n\n");
+        console.log('\x1b[37m%s\x1b[0m', "\n☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵☵\n");
     });
 };
 
 //웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
+//DISPLAY ALL ITEMS LOW IN STOCK QUANTITY
 
+
+
+//웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
+//ADD MORE INVENTORY
+
+
+//웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟웃̟͟͟웃̟͟͟웃̟͟
 let managerQuestions = [
     {
         type: 'list',
@@ -89,25 +97,50 @@ function managerPrompt() {
     inquirer
     .prompt(managerQuestions)
     .then(answers => {
-
-        console.log(answers);
-
         switch (answers.options) {
-            case "View Products for Sale":
+            case "View Products for Sale": //VIEW ALL PRODUCTS
                 console.log('\x1b[33m', "Displaying all products currently on sale...\n");
                 displayItems(); //calling the function for displaying all items.
               break;
 
-            case "View Low Inventory":
+            case "View Low Inventory": //DISPLAY LOW INVENTORY
                 console.log('\x1b[33m', "Displaying all products with a stock quantity below 5 units...\n");
-              break;
-
-            case "Add to Inventory":
-                console.log('\x1b[33m', "Which product would you like to restock?\n");
 
               break;
 
-            case "Add New Product":
+            case "Add to Inventory": //ADD TO INVENTORY
+            console.log("\n")
+                inquirer
+                .prompt([
+                    {
+                        type: 'list',
+                        name: 'option',
+                        message: "Which product would you like to restock?",
+                        choices: productName
+                    },
+                    {
+                        type: 'input',
+                        name: 'Q2',
+                        message: "How many units would you like to order?",
+                        default: '1'
+                    },
+                ])
+                .then(restockAnswers => {
+                    console.log(restockAnswers.option);
+                    console.log(restockAnswers.Q2);
+
+
+
+
+
+
+
+
+                    
+                });
+              break;
+
+            case "Add New Product": //ADD NEW PRODUCTS
                 console.log('\x1b[33m', "Please provide the product name, department, price, and quantity to be added.\n");
                 inquirer
                 .prompt([
@@ -148,5 +181,4 @@ function managerPrompt() {
 
     });
 };
-
 managerPrompt();
